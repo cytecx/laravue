@@ -13,7 +13,7 @@ class ListingController extends Controller
     public function index()
     {
         return inertia('Listing/Index', [
-            'listing' => Listing::all(),
+            'listings' => Listing::all(),
         ]);
     }
 
@@ -34,7 +34,7 @@ class ListingController extends Controller
             $request->validate([
                 'beds' => 'required|integer|min:0|max:20',
                 'baths' => 'required|integer|min:0|max:20',
-                'area' => 'required|integer|min:0|max:1000',
+                'area' => 'required|integer|min:15|max:1000',
                 'city' => 'required|string',
                 'post_code' => 'required|string',
                 'street_nr' => 'required|integer|min:0|max:10000',
@@ -75,7 +75,7 @@ class ListingController extends Controller
             $request->validate([
                 'beds' => 'required|integer|min:0|max:20',
                 'baths' => 'required|integer|min:0|max:20',
-                'area' => 'required|integer|min:0|max:1000',
+                'area' => 'required|integer|min:15|max:1000',
                 'city' => 'required|string',
                 'post_code' => 'required|string',
                 'street_nr' => 'required|integer|min:0|max:10000',
