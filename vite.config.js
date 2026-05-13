@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
+import path from 'path';
 
 export default defineConfig({
     plugins: [
@@ -30,4 +31,9 @@ export default defineConfig({
             ignored: ['**/storage/framework/views/**'],
         },
     },
+    resolve: {
+        alias: {
+            ziggy: path.resolve(__dirname, 'vendor/tightenco/ziggy/dist/index.js'),
+        },
+    }
 });

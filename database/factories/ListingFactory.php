@@ -23,7 +23,7 @@ class ListingFactory extends Factory
             'baths' => fake()->numberBetween(1, 5),
             'area' => fake()->numberBetween(500, 5_000),
             'city' => fake()->city(),
-            'code' => fake()->postcode(),
+            'post_code' => fake()->postcode(),
             'street' => fake()->streetName(),
             'street_nr' => fake()->buildingNumber(),
             'price' => fake()->numberBetween(100_000, 1_000_000),

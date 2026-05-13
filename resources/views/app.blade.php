@@ -7,13 +7,14 @@
 
     <title>{{ config("app.name", "Laravel") }}</title>
 
+    @routes()
     @vite(["resources/css/app.css", "resources/js/app.js"])
     @inertiaHead
 
     @fonts
 </head>
 
-<body>
+<body class="text-gray-900 bg-white  dark:text-gray-100 dark:bg-gray-900">
     @inertia
 </body>
 

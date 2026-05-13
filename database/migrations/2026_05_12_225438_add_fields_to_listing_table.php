@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('baths');
             $table->unsignedSmallInteger('area');
             $table->tinyText('city');
-            $table->tinyText('code');
+            $table->tinyText('post_code');
             $table->tinyText('street');
             $table->tinyText('street_nr');
             $table->unsignedBigInteger('price');
@@ -31,6 +31,6 @@ return new class extends Migration
         // Schema::table('listing', function (Blueprint $table) {
         //     //
         // });
-        Schema::dropColumns('listings', ['beds', 'baths', 'area', 'city', 'code', 'street', 'street_nr', 'price']);
+        Schema::dropColumns('listings', ['beds', 'baths', 'area', 'city', 'post_code', 'street', 'street_nr', 'price']);
     }
 };

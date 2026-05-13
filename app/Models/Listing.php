@@ -14,7 +14,7 @@ class Listing extends Model
         'baths',
         'area',
         'city',
-        'code',
+        'post_code',
         'street',
         'street_nr',
         'price'
