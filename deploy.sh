@@ -6,7 +6,7 @@ export HOME=/home/ubuntu
 export COMPOSER_HOME=/home/ubuntu/.composer
 
 # 2. Update code
-git pull origin main
+git pull main
 
 # 3. Install dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader
