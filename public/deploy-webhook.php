@@ -12,7 +12,7 @@ if (!hash_equals($hash, $signature)) {
     exit('Invalid signature');
 }
 
-exec('/var/www/larazillow/deploy.sh 2>&1', $output, $code);
+exec('sudo -u ubuntu /var/www/larazillow/deploy.sh 2>&1', $output, $code);
 
 http_response_code($code === 0 ? 200 : 500);
 echo implode("\n", $output);
