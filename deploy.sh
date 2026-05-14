@@ -6,6 +6,7 @@ export HOME=/home/ubuntu
 export COMPOSER_HOME=/home/ubuntu/.composer
 
 # 2. Update code
+cd /var/www/larazillow
 git pull origin main
 
 # 3. Install dependencies
