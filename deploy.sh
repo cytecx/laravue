@@ -1,15 +1,18 @@
 #!/bin/bash
-cd /var/www/larazillow || exit
+cd /var/www/larazillow
 
-git -c safe.directory=/var/www/larazillow pull origin main
+# 1. Set environment variables
+export HOME=/home/ubuntu
+export COMPOSER_HOME=/home/ubuntu/.composer
 
-composer install --no-dev --optimize-autoloader
+# 2. Update code
+git pull origin main
 
+# 3. Install dependencies
+composer install --no-interaction --prefer-dist --optimize-autoloader
 npm install
 npm run build
 
+# 4. Laravel housekeeping
 php artisan migrate --force
 php artisan optimize:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
