@@ -9,8 +9,8 @@ export COMPOSER_HOME=/home/ubuntu/.composer
 git pull
 
 # 3. Install dependencies
-composer install --no-interaction --prefer-dist --optimize-autoloader
-npm install
+composer install --no-dev --optimize-autoloader --no-interaction
+npm ci
 npm run build
 
 # 4. Laravel housekeeping
