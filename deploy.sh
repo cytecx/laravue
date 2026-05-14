@@ -1,7 +1,7 @@
 #!/bin/bash
 cd /var/www/larazillow || exit
 
-git pull origin main
+git -c safe.directory=/var/www/larazillow pull origin main
 
 composer install --no-dev --optimize-autoloader
 
