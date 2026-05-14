@@ -6,7 +6,7 @@
                     <Link :href="route('listing.index')">Listings</Link>
                 </div>
                 <div class="text-xl text-indigo-600 dark:text-indigo-300 font-bold">
-                    <Link :href="route('listing.index')">LaraZillow</Link>
+                    <Link :href="route('listing.index')">LaraZillow 13</Link>
                 </div>
                 <div class="text-lg">
                     <Link :href="route('listing.create')" class="btn-primary">+ New Listing</Link>
