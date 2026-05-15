@@ -36,4 +36,4 @@ jobs:
         run: npm run build
 
       - name: Update Permissions
-        run: sudo chown -R www:www /var/www/laravue/storage /var/www/laravue/bootstrap/cache
+        run: sudo chown -R ubuntu:ubuntu /var/www/laravue/storage /var/www/laravue/bootstrap/cache
