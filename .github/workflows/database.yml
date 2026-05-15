@@ -8,13 +8,8 @@ on:
         required: false
         default: false
         type: boolean
-      run_seeder:
-        description: "Run Database Seeders"
-        required: false
-        default: false
-        type: boolean
       seeder_type:
-        description: "Seeder Type"
+        description: "Run Database Seeders"
         required: false
         default: None
         type: choice
@@ -32,7 +27,7 @@ jobs:
 
   Seeder:
     runs-on: ovhcloud-v1
-    if: ${{ github.event.inputs.run_seeder == 'true' }}
+    if: ${{ github.event.inputs.seeder_type != 'None' }}
     steps:
       - name: Run Seeder
         run: |
