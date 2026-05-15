@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /var/www/larazillow
+cd /var/www/laravue
 
 # 1. Set environment variables
 export HOME=/home/ubuntu
