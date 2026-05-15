@@ -36,7 +36,7 @@ jobs:
       - name: Install Composer Dependencies
         run: |
           cd /var/www/laravue
-          composer install --no-dev --optimize-autoloader
+          composer install --optimize-autoloader
 
       - name: Install NPM Dependencies
         run: |
