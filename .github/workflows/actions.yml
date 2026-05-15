@@ -6,29 +6,34 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ovhcloud
     defaults:
       run:
-        working-directory: /var/www/larazillow
+        working-directory: /var/www/laravue
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3"
+      - name: Deploy to Apache folder
+        run: |
+          sudo rsync -av --delete ./ /var/www/laravue/
 
-      - name: Git pull
-        run: git pull
+      # - name: Setup PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: "8.3"
+
+      # - name: Git pull
+      #   run: git pull
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist
+        run: composer install --no-dev --optimize-autoloader
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "22"
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "22"
 
       - name: Install npm dependencies
         run: npm ci
