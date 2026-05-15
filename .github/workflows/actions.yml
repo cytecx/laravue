@@ -15,6 +15,7 @@ jobs:
       - name: Deploy to Apache folder
         run: |
           sudo rsync -av --delete \
+            --exclude=".env" \
             --exclude=".git" \
             --exclude="node_modules" \
             --exclude="vendor" \
@@ -33,3 +34,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Update Permissions
+        run: sudo chown -R www:www /var/www/laravue/storage /var/www/laravue/bootstrap/cache
