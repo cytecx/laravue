@@ -6,7 +6,7 @@ on:
       run_migration:
         description: "Run Database Migrations"
         required: false
-        default: true # Kita set default true sebab memang ni file utk DB
+        default: false
         type: boolean
       run_seeder:
         description: "Run Database Seeders"
@@ -21,22 +21,20 @@ on:
         options: [Normal, Fresh]
 
 jobs:
-  DB_Task:
+  Migration:
     runs-on: ovhcloud-v1
     steps:
-      - name: Pull Latest Changes (Ensure Migration Files Exist)
-        run: |
-          cd /var/www/laravue
-          git pull origin main
-
-      - name: Run Migration
+      - name: Migrate Database
         if: ${{ github.event.inputs.run_migration == 'true' }}
         run: |
           cd /var/www/laravue
           php artisan migrate --force
 
+  Seeder:
+    runs-on: ovhcloud-v1
+    if: ${{ github.event.inputs.run_seeder == 'true' }}
+    steps:
       - name: Run Seeder
-        if: ${{ github.event.inputs.run_seeder == 'true' }}
         run: |
           cd /var/www/laravue
           if [ "${{ github.event.inputs.seeder_mode }}" = "Fresh" ]; then
