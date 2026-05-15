@@ -3,11 +3,17 @@ name: Build & Deploy
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_migration:
+        description: "Tandakan kalau nak run migration sekali"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   Deploy:
     runs-on: ovhcloud-v1
-
     steps:
       - name: Pull Latest Code
         run: |
@@ -34,7 +40,7 @@ jobs:
   Migration:
     runs-on: ovhcloud-v1
     needs: Deploy
-
+    if: ${{ github.event.inputs.run_migration == 'true' }}
     steps:
       - name: Run Database Migrations
         run: |
