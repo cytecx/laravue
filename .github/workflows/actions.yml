@@ -3,13 +3,6 @@ name: Build & Deploy
 on:
   push:
     branches: [main, master]
-  workflow_dispatch:
-    inputs:
-      run_migration:
-        description: "Tandakan kalau nak run migration sekali"
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   Deploy:
@@ -49,7 +42,7 @@ jobs:
 
   Optimization:
     runs-on: ovhcloud-v1
-    needs: Deploy
+    needs: Migration
     steps:
       - name: Optimize
         run: |
