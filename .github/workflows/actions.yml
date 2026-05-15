@@ -3,6 +3,16 @@ name: Build & Deploy
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_migration:
+        description: "Run database migrations"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
 
 jobs:
   Deploy:
