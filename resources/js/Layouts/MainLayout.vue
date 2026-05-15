@@ -6,7 +6,7 @@
                     <Link :href="route('listing.index')">Listings</Link>
                 </div>
                 <div class="text-xl text-indigo-600 dark:text-indigo-300 font-bold">
-                    <Link :href="route('listing.index')">{{ appName }} v11</Link>
+                    <Link :href="route('listing.index')">{{ appName }} v12</Link>
                 </div>
                 <div v-if="user" class="flex items-center gap-4">
                     <div class="text-sm text-gray-500">{{ user.name }}</div>
