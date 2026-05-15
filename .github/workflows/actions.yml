@@ -11,15 +11,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Git pull
+        run: git pull
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "22"
 
-      - name: Git pull
-        run: git pull
-
-      - name: Install dependencies
+      - name: Install npm dependencies
         run: npm ci
 
       - name: Build
