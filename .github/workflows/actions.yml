@@ -8,11 +8,8 @@ on:
       run_migration:
         description: "Run database migrations"
         required: false
-        default: "false"
-        type: choice
-        options:
-          - "true"
-          - "false"
+        default: false
+        type: boolean
 
 jobs:
   Deploy:
@@ -40,19 +37,9 @@ jobs:
           sudo chown -R ubuntu:www-data /var/www/laravue/storage /var/www/laravue/bootstrap/cache
           sudo chmod -R 775 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
 
-  Migration:
-    runs-on: ovhcloud-v1
-    needs: Deploy
-    if: ${{ github.event.inputs.run_migration == 'true' }}
-    steps:
-      - name: Run Database Migrations
-        run: |
-          cd /var/www/laravue
-          php artisan migrate --force
-
   Optimization:
     runs-on: ovhcloud-v1
-    needs: Migration
+    needs: Deploy
     steps:
       - name: Optimize
         run: |
@@ -73,3 +60,13 @@ jobs:
         run: |
           cd /var/www/laravue
           php artisan view:cache
+
+  Migration:
+    runs-on: ovhcloud-v1
+    needs: Optimization
+    if: ${{ github.event.inputs.run_migration == 'true' }}
+    steps:
+      - name: Run Database Migrations
+        run: |
+          cd /var/www/laravue
+          php artisan migrate --force
