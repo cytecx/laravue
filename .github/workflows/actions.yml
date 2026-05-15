@@ -3,16 +3,9 @@ name: Build & Deploy
 on:
   push:
     branches: [main, master]
-  workflow_dispatch:
-    inputs:
-      run_migration:
-        description: "Run database migrations"
-        required: false
-        default: false
-        type: boolean
 
 jobs:
-  deploy:
+  Deploy:
     runs-on: ovhcloud-v1
 
     steps:
@@ -38,8 +31,12 @@ jobs:
           sudo chown -R ubuntu:www-data /var/www/laravue/storage /var/www/laravue/bootstrap/cache
           sudo chmod -R 775 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
 
-      - name: Run Migrations (Manual)
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_migration == true }}
+  Migration:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+
+    steps:
+      - name: Run Database Migrations
         run: |
           cd /var/www/laravue
           php artisan migrate --force
