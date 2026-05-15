@@ -9,8 +9,21 @@ jobs:
     runs-on: ovhcloud-v1
 
     steps:
-      - name: Pull Latest Code
-        run: git -C /var/www/laravue pull --ff-only || true
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Apache folder
+        run: |
+          sudo rsync -av --delete \
+            --exclude=".git" \
+            --exclude="node_modules" \
+            --exclude="vendor" \
+            ./ /var/www/laravue/
+
+            cd /var/www/laravue
+
+      # - name: Pull Latest Code
+      #   run: git -C /var/www/laravue pull --ff-only || true
 
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader
