@@ -77,7 +77,7 @@ jobs:
   Migration:
     runs-on: ovhcloud-v1
     needs: Optimization
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true')
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true'
     steps:
       - name: Run Database Migrations
         run: |
@@ -87,7 +87,7 @@ jobs:
   Seeder:
     runs-on: ovhcloud-v1
     needs: Optimization
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_seeder == 'true')
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_seeder == 'true'
     steps:
       - name: Run Database Seeders
         run: |
