@@ -6,10 +6,23 @@ on:
   workflow_dispatch:
     inputs:
       run_migration:
-        description: "Run database migrations"
+        description: "Run Database Migrations"
         required: false
         default: false
         type: boolean
+      run_seeder:
+        description: "Run Database Seeders"
+        required: false
+        default: false
+        type: boolean
+      seeder_mode:
+        description: "Seeder Mode"
+        required: false
+        default: Normal
+        type: choice
+        options:
+          - Normal
+          - Fresh
 
 jobs:
   Deploy:
@@ -70,3 +83,17 @@ jobs:
         run: |
           cd /var/www/laravue
           php artisan migrate --force
+
+  Seeder:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+    if: ${{ github.event.inputs.run_seeder == 'true' }}
+    steps:
+      - name: Run Database Seeders
+        run: |
+          cd /var/www/laravue
+          if [ "${{ github.event.inputs.seeder_mode }}" = "Fresh" ]; then
+            php artisan migrate:refresh --seed --force
+          else
+            php artisan db:seed --force
+          fi
