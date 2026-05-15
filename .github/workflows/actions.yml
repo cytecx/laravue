@@ -46,3 +46,27 @@ jobs:
         run: |
           cd /var/www/laravue
           php artisan migrate --force
+
+  Optimization:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+    steps:
+      - name: Optimize
+        run: |
+          cd /var/www/laravue
+          php artisan optimize:clear
+
+      - name: Cache Configurations
+        run: |
+          cd /var/www/laravue
+          php artisan config:cache
+
+      - name: Cache Routes
+        run: |
+          cd /var/www/laravue
+          php artisan route:cache
+
+      - name: Cache Views
+        run: |
+          cd /var/www/laravue
+          php artisan view:cache
