@@ -7,19 +7,21 @@ on:
 jobs:
   build:
     runs-on: ovhcloud-v1
-    defaults:
-      run:
-        working-directory: /var/www/laravue
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Deploy to Apache folder
+      - name: Pull Latest Code
+        run: sudo git -C /var/www/laravue pull --ff-only || true
+
+      - name: Deploy to Server
         run: |
-          sudo rsync -av --delete ./ /var/www/laravue/
+          sudo rsync -av --delete "${GITHUB_WORKSPACE}/" /var/www/laravue/
 
-      - name: Update server permissions
+      - name: Update Server Permissions
         run: |
           sudo chown -R "$(id -un)":"$(id -gn)" /var/www/laravue
 
