@@ -1,40 +1,33 @@
-name: Build
+name: Build & Deploy
 
 on:
   push:
     branches: [main, master]
 
 jobs:
-  build:
+  deploy:
     runs-on: ovhcloud-v1
 
     steps:
       - name: Pull Latest Code
-        run: git -C /var/www/laravue pull --ff-only || true
-
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Install npm Dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy to Apache folder
         run: |
-          sudo rsync -av --delete \
-            --exclude=".env" \
-            --exclude=".git" \
-            --exclude="node_modules" \
-            --exclude="storage" \
-            --exclude="bootstrap/cache" \
-            ./ /var/www/laravue/
+          cd /var/www/laravue
+          git pull origin ${{ github.ref_name }}
 
-            cd /var/www/laravue
+      - name: Composer Install
+        run: |
+          cd /var/www/laravue
+          composer install --no-dev --optimize-autoloader
 
-      - name: Update Permissions
-        run: sudo chown -R ubuntu:ubuntu /var/www/laravue/storage /var/www/laravue/bootstrap/cache && sudo chmod -R 777 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
+      - name: NPM Build
+        run: |
+          cd /var/www/laravue
+          npm ci
+          npm run build
+
+      # 4. Cleanup & Permissions
+      - name: Optimization & Permissions
+        run: |
+          cd /var/www/laravue
+          sudo chown -R ubuntu:www-data /var/www/laravue/storage /var/www/laravue/bootstrap/cache
+          sudo chmod -R 775 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
