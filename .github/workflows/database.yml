@@ -22,7 +22,7 @@ jobs:
       - name: Migrate Database
         if: ${{ github.event.inputs.run_migration == 'true' }}
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           php artisan migrate --force
 
   Seeder:
@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Run Seeder
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           case "${{ github.event.inputs.seeder_type }}" in
             Fresh)
               php artisan migrate:refresh --seed --force

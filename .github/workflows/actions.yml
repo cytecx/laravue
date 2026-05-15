@@ -10,25 +10,25 @@ jobs:
     steps:
       - name: Pull Latest Code
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           git pull origin ${{ github.ref_name }}
 
       - name: Install Composer Dependencies
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           composer install --optimize-autoloader
 
       - name: Install NPM Dependencies
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           npm ci
           npm run build
 
       - name: Update Permissions
         run: |
-          cd /var/www/laravue
-          sudo chown -R ubuntu:www-data /var/www/laravue/storage /var/www/laravue/bootstrap/cache
-          sudo chmod -R 775 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
+          cd "${{ vars.APP_PATH }}"
+          sudo chown -R ubuntu:www-data "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
+          sudo chmod -R 775 "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
 
   Optimization:
     runs-on: ovhcloud-v1
@@ -36,20 +36,20 @@ jobs:
     steps:
       - name: Optimize
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           php artisan optimize:clear
 
       - name: Cache Configurations
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           php artisan config:cache
 
       - name: Cache Routes
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           php artisan route:cache
 
       - name: Cache Views
         run: |
-          cd /var/www/laravue
+          cd "${{ vars.APP_PATH }}"
           php artisan view:cache
