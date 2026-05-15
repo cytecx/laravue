@@ -9,37 +9,11 @@ jobs:
     runs-on: ovhcloud-v1
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Pull Latest Code
         run: sudo git -C /var/www/laravue pull --ff-only || true
 
-      - name: Deploy to Server
-        run: |
-          sudo rsync -av --delete "${GITHUB_WORKSPACE}/" /var/www/laravue/
-
-      - name: Update Server Permissions
-        run: |
-          sudo chown -R "$(id -un)":"$(id -gn)" /var/www/laravue
-
-      # - name: Setup PHP
-      #   uses: shivammathur/setup-php@v2
-      #   with:
-      #     php-version: "8.3"
-
-      # - name: Git pull
-      #   run: git pull
-
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader
-
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "22"
 
       - name: Install npm Dependencies
         run: npm ci
