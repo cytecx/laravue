@@ -28,7 +28,6 @@ jobs:
             --exclude=".git" \
             --exclude="node_modules" \
             --exclude="vendor" \
-            --exclude="public/build" \
             --exclude="storage" \
             --exclude="bootstrap/cache" \
             ./ /var/www/laravue/
