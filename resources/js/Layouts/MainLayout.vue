@@ -6,10 +6,16 @@
                     <Link :href="route('listing.index')">Listings</Link>
                 </div>
                 <div class="text-xl text-indigo-600 dark:text-indigo-300 font-bold">
-                    <Link :href="route('listing.index')">LaraZillow v11</Link>
+                    <Link :href="route('listing.index')">{{ appName }}</Link>
                 </div>
-                <div class="text-lg">
+                <div v-if="user" class="flex items-center gap-4">
+                    <div class="text-sm text-gray-500">{{ user.name }}</div>
                     <Link :href="route('listing.create')" class="btn-primary">+ New Listing</Link>
+                    <Link :href="route('logout')" method="delete" class="cursor-pointer btn-secondary">Logout</Link>
+                </div>
+                <div v-else class="flex items-center gap-2">
+                    <Link :href="route('user-account.create')" class="btn-secondary">Register</Link>|
+                    <Link :href="route('login')" class="cursor-pointer">Sign-In</Link>
                 </div>
             </nav>
         </div>
@@ -17,7 +23,7 @@
 
     <main class="container mx-auto py-4 w-full">
         <div>
-            <p v-if="flashSuccess" class="mb-4 border rounded-md shadow-sm border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 p-2">yesss</p>
+            <p v-if="flashSuccess" class="mb-4 border rounded-md shadow-sm border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900 p-2">{{ flashSuccess }}</p>
         </div>
 
         <slot></slot>
@@ -31,4 +37,6 @@ import { computed } from "vue";
 
 const page = usePage();
 const flashSuccess = computed(() => page.props.flash.success);
+const user = computed(() => page.props.user);
+const appName = computed(() => page.props.appName || "");
 </script>

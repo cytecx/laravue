@@ -10,6 +10,11 @@ class ListingController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     public function index()
     {
         return inertia('Listing/Index', [
@@ -93,6 +98,7 @@ class ListingController extends Controller
     public function destroy(Listing $listing)
     {
         $listing->delete();
+
         return redirect()->route('listing.index')->with('success', 'Listing deleted successfully.');
     }
 }

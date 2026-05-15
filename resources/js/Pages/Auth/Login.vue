@@ -12,14 +12,17 @@
                 <div class="input-error" v-if="form.errors.password">{{ form.errors.password }}</div>
             </div>
             <div class="mt-4">
-                <button type="submit" class="btn-primary w-full">Login</button>
+                <button type="submit" class="cursor-pointer btn-primary w-full">Login</button>
+                <div class="mt-2 text-center">
+                    <Link :href="route('user-account.create')" class="text-sm text-gray-500">Don't have an account? Register</Link>
+                </div>
             </div>
         </div>
     </form>
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 
 const form = useForm({
     email: null,
