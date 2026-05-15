@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Pull Latest Code
-        run: sudo git -C /var/www/laravue pull --ff-only || true
+        run: git -C /var/www/laravue pull --ff-only || true
 
       - name: Install Composer Dependencies
         run: composer install --no-dev --optimize-autoloader
