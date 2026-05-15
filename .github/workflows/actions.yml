@@ -76,7 +76,7 @@ jobs:
 
   Migration:
     runs-on: ovhcloud-v1
-    needs: Deploy
+    needs: Optimization
     if: ${{ github.event.inputs.run_migration == 'true' }}
     steps:
       - name: Run Database Migrations
@@ -86,7 +86,7 @@ jobs:
 
   Seeder:
     runs-on: ovhcloud-v1
-    needs: [Deploy, Migration]
+    needs: Optimization
     if: ${{ github.event.inputs.run_seeder == 'true' }}
     steps:
       - name: Run Database Seeders
