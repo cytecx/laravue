@@ -3,6 +3,13 @@ name: Build & Deploy
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_migration:
+        description: "Run database migrations"
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   deploy:
@@ -14,20 +21,25 @@ jobs:
           cd /var/www/laravue
           git pull origin ${{ github.ref_name }}
 
-      - name: Composer Install
+      - name: Install Composer Dependencies
         run: |
           cd /var/www/laravue
           composer install --no-dev --optimize-autoloader
 
-      - name: NPM Build
+      - name: Install NPM Dependencies
         run: |
           cd /var/www/laravue
           npm ci
           npm run build
 
-      # 4. Cleanup & Permissions
-      - name: Optimization & Permissions
+      - name: Update Permissions
         run: |
           cd /var/www/laravue
           sudo chown -R ubuntu:www-data /var/www/laravue/storage /var/www/laravue/bootstrap/cache
           sudo chmod -R 775 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
+
+      - name: Run Migrations (Manual)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_migration == true }}
+        run: |
+          cd /var/www/laravue
+          php artisan migrate --force
