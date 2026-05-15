@@ -1,0 +1,56 @@
+name: Database Operations
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_migration:
+        description: "Run Database Migrations"
+        required: false
+        default: false
+        type: boolean
+      run_seeder:
+        description: "Run Database Seeders"
+        required: false
+        default: false
+        type: boolean
+      seeder_type:
+        description: "Seeder Type"
+        required: false
+        default: None
+        type: choice
+        options: [None, Fresh, Normal, User, Listing]
+
+jobs:
+  Migration:
+    runs-on: ovhcloud-v1
+    steps:
+      - name: Migrate Database
+        if: ${{ github.event.inputs.run_migration == 'true' }}
+        run: |
+          cd /var/www/laravue
+          php artisan migrate --force
+
+  Seeder:
+    runs-on: ovhcloud-v1
+    if: ${{ github.event.inputs.run_seeder == 'true' }}
+    steps:
+      - name: Run Seeder
+        run: |
+          cd /var/www/laravue
+          case "${{ github.event.inputs.seeder_type }}" in
+            Fresh)
+              php artisan migrate:refresh --seed --force
+              ;;
+            Normal)
+              php artisan db:seed --force
+              ;;
+            User)
+              php artisan db:seed --class=UserSeeder --force
+              ;;
+            Listing)
+              php artisan db:seed --class=ListingSeeder --force
+              ;;
+            *)
+              echo "No valid seeder_type provided"
+              ;;
+          esac
