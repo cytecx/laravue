@@ -27,6 +27,7 @@ on:
 jobs:
   Deploy:
     runs-on: ovhcloud-v1
+    if: github.event_name == 'push'
     steps:
       - name: Pull Latest Code
         run: |
@@ -53,6 +54,7 @@ jobs:
   Optimization:
     runs-on: ovhcloud-v1
     needs: Deploy
+    if: github.event_name == 'push'
     steps:
       - name: Optimize
         run: |
@@ -76,7 +78,6 @@ jobs:
 
   Migration:
     runs-on: ovhcloud-v1
-    needs: Optimization
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true'
     steps:
       - name: Run Database Migrations
@@ -86,7 +87,6 @@ jobs:
 
   Seeder:
     runs-on: ovhcloud-v1
-    needs: Optimization
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_seeder == 'true'
     steps:
       - name: Run Database Seeders
