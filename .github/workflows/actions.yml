@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ovhcloud-v1
     defaults:
       run:
         working-directory: /var/www/laravue
