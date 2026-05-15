@@ -9,7 +9,10 @@ jobs:
     runs-on: ovhcloud-v1
 
     steps:
-      - name: Checkout code
+      - name: Pull Latest Code
+        run: git -C /var/www/laravue pull --ff-only || true
+
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Install Composer Dependencies
@@ -27,15 +30,11 @@ jobs:
             --exclude=".env" \
             --exclude=".git" \
             --exclude="node_modules" \
-            --exclude="vendor" \
             --exclude="storage" \
             --exclude="bootstrap/cache" \
             ./ /var/www/laravue/
 
             cd /var/www/laravue
-
-      # - name: Pull Latest Code
-      #   run: git -C /var/www/laravue pull --ff-only || true
 
       - name: Update Permissions
         run: sudo chown -R ubuntu:ubuntu /var/www/laravue/storage /var/www/laravue/bootstrap/cache && sudo chmod -R 777 /var/www/laravue/storage /var/www/laravue/bootstrap/cache
