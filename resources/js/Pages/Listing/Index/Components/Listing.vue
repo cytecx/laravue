@@ -12,10 +12,6 @@
             <ListingSpace :listing="listing" class="text-lg" />
             <ListingAddress :listing="listing" class="text-gray-600" />
         </div>
-        <div class="mt-4 flex justify-between gap-2">
-            <Link :href="route('listing.edit', listing.id)" class="px-3 py-1 cursor-pointer bg-blue-600 text-white rounded hover:bg-blue-700 transition">Edit</Link>
-            <Link :href="route('listing.destroy', listing.id)" method="delete" as="button" class="px-3 py-1 cursor-pointer bg-red-600 text-white rounded hover:bg-red-700 transition">Delete</Link>
-        </div>
     </Box>
 </template>
 
