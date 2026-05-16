@@ -13,12 +13,16 @@ class ListingController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
+        $this->authorizeResource(Listing::class, 'listing');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only(['priceFrom', 'priceTo', 'beds', 'baths', 'areaFrom', 'areaTo']);
+
         return inertia('Listing/Index', [
-            'listings' => Listing::all(),
+            'filters' => $filters,
+            'listings' => Listing::mostRecent()->filter($filters)->paginate(12)->withQueryString(),
         ]);
     }
 
@@ -35,7 +39,7 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        $listing = Listing::create(
+        $request->user()->listings()->create(
             $request->validate([
                 'beds' => 'required|integer|min:0|max:20',
                 'baths' => 'required|integer|min:0|max:20',

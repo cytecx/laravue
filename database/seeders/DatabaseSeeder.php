@@ -6,6 +6,7 @@ use App\Models\Listing;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,9 +21,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'munirulhaikal@gmail.com',
         ], [
             'name' => 'Munirul Haikal',
+            'email_verified_at' => now(),
             'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+            'is_admin' => true,
         ]);
         User::factory(10)->create();
-        Listing::factory(20)->create();
+        Listing::factory(20)->create([
+            'by_user_id' => 1,
+        ]);
+        Listing::factory(20)->create([
+            'by_user_id' => 2,
+        ]);
     }
 }

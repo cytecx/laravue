@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ListingFactory extends Factory
 {
+    protected $model = Listing::class;
+
     /**
      * Define the model's default state.
      *
@@ -17,15 +19,17 @@ class ListingFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create('ms_MY');
+
         return [
-            'beds' => $this->faker->numberBetween(1, 5),
-            'baths' => $this->faker->numberBetween(1, 5),
-            'area' => $this->faker->numberBetween(500, 5_000),
-            'city' => $this->faker->city(),
-            'post_code' => $this->faker->postcode(),
-            'street' => $this->faker->streetName(),
-            'street_nr' => $this->faker->buildingNumber(),
-            'price' => $this->faker->numberBetween(100_000, 1_000_000),
+            'beds' => $faker->numberBetween(1, 5),
+            'baths' => $faker->numberBetween(1, 5),
+            'area' => $faker->numberBetween(500, 5_000),
+            'city' => $faker->city(),
+            'post_code' => $faker->postcode(),
+            'street' => $faker->streetName(),
+            'street_nr' => $faker->buildingNumber(),
+            'price' => $faker->numberBetween(100_000, 1_000_000),
         ];
     }
 }
