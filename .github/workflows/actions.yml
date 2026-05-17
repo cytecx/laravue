@@ -3,6 +3,19 @@ name: Build & Deploy
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_migration:
+        description: "Run Database Migrations"
+        required: false
+        default: false
+        type: boolean
+      seeder_type:
+        description: "Run Database Seeders"
+        required: false
+        default: None
+        type: choice
+        options: [None, Fresh, Normal, User, Listing]
 
 jobs:
   Deploy:
@@ -53,3 +66,39 @@ jobs:
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan view:cache
+
+  Migration:
+    needs: Optimization
+    runs-on: ovhcloud-v1
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true'
+    steps:
+      - name: Migrate Database
+        run: |
+          cd "${{ vars.APP_PATH }}"
+          php artisan migrate --force
+
+  Seeder:
+    needs: Migration
+    runs-on: ovhcloud-v1
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.seeder_type != 'None'
+    steps:
+      - name: Run Seeder
+        run: |
+          cd "${{ vars.APP_PATH }}"
+          case "${{ github.event.inputs.seeder_type }}" in
+            Fresh)
+              php artisan migrate:fresh --seed --force
+              ;;
+            Normal)
+              php artisan db:seed --force
+              ;;
+            User)
+              php artisan db:seed --class=UserSeeder --force
+              ;;
+            Listing)
+              php artisan db:seed --class=ListingSeeder --force
+              ;;
+            *)
+              echo "No valid seeder_type provided"
+              ;;
+          esac
