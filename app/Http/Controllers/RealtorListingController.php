@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
-class RealtorController extends Controller
+class RealtorListingController extends Controller
 {
     public function __construct()
     {
@@ -24,7 +24,13 @@ class RealtorController extends Controller
 
         return inertia('Realtor/Index', [
             'filters' => $filters,
-            'listings' => auth()->user()->listings()->filter($filters)->withCount('images')->paginate(12)->withQueryString(),
+            'listings' => auth()->user()
+                ->listings()
+                ->filter($filters)
+                ->withCount('images')
+                ->withCount('offers')
+                ->paginate(8)
+                ->withQueryString(),
         ]);
     }
 
@@ -60,9 +66,11 @@ class RealtorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Listing $listing)
     {
-        //
+        return Inertia('Realtor/Show', [
+            'listing' => $listing->load(['offers', 'offers.bidder']),
+        ]);
     }
 
     /**

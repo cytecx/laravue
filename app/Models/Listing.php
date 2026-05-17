@@ -22,6 +22,7 @@ class Listing extends Model
         'street',
         'street_nr',
         'price',
+        'sold_at'
     ];
 
     protected $sortable = [
@@ -39,6 +40,17 @@ class Listing extends Model
     public function images(): HasMany
     {
         return $this->hasMany(ListingImage::class);
+    }
+
+    public function offers(): HasMany
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    public function scopeWithoutSold(Builder $query): Builder
+    {
+        // return $query->doesntHave('offers')->orWhereHas('offers', fn (Builder $query) => $query->whereNull('accepted_at')->whereNull('rejected_at'));
+        return $query->whereNull('sold_at');
     }
 
     public function scopeMostRecent(Builder $query): Builder

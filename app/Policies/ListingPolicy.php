@@ -16,6 +16,7 @@ class ListingPolicy
             return true;
         }
     }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -29,7 +30,11 @@ class ListingPolicy
      */
     public function view(?User $user, Listing $listing): bool
     {
-        return true;
+        if ($listing->by_user_id === $user?->id) {
+            return true;
+        }
+
+        return $listing->sold_at === null;
     }
 
     /**
@@ -45,7 +50,7 @@ class ListingPolicy
      */
     public function update(User $user, Listing $listing): bool
     {
-        return $user->id === $listing->by_user_id;
+        return $listing->sold_at === null && ($user->id === $listing->by_user_id);
     }
 
     /**

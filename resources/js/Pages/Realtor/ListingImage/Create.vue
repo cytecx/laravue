@@ -1,4 +1,9 @@
 <template>
+
+  <div class="mb-4">
+    <Link :href="route('realtor.listing.index')">← Go back to Listings</Link>
+  </div>
+
   <Box>
     <template #header>
       <h1>Upload New Images</h1>

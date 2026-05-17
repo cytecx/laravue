@@ -35,20 +35,29 @@
                     <div class="mt-2 text-gray-500">
                         <div class="flex justify-between">
                             <div>Principal Paid</div>
-                            <div><Price :price="listing.price" class="font-medium" /></div>
+                            <div>
+                                <Price :price="offer" class="font-medium" />
+                            </div>
                         </div>
                         <div class="flex justify-between">
                             <div>Total Interest</div>
-                            <div><Price :price="totalInterest" class="font-medium" /></div>
+                            <div>
+                                <Price :price="totalInterest" class="font-medium" />
+                            </div>
                         </div>
                         <div class="flex justify-between">
                             <div>Total Paid</div>
-                            <div><Price :price="totalPaid" class="font-medium" /></div>
+                            <div>
+                                <Price :price="totalPaid" class="font-medium" />
+                            </div>
                         </div>
                     </div>
 
                 </div>
             </Box>
+
+            <MakeOffer v-if="user && !offerMade" :listing-id="listing.id" :price="listing.price" @offer-updated="offer = $event" />
+            <OfferMade v-if="user && offerMade" :offer="offerMade" />
         </div>
     </div>
 </template>
@@ -60,12 +69,19 @@ import Price from '@/Components/Price.vue'
 import Box from '@/Components/UI/Box.vue'
 import { ref } from 'vue'
 import { useMonthlyPayment } from "@/Composables/useMonthlyPayment"
+import MakeOffer from "@/Pages/Listing/Show/Components/MakeOffer.vue"
+import { usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import OfferMade from "@/Pages/Listing/Show/Components/OfferMade.vue"
 
 const interestRate = ref(2.5)
 const duration = ref(35)
 const props = defineProps({
     listing: Object,
+    offerMade: Object,
 })
-const { monthlyPayment, totalPaid, totalInterest } = useMonthlyPayment(props.listing.price, interestRate, duration)
-
+const offer = ref(props.listing.price)
+const { monthlyPayment, totalPaid, totalInterest } = useMonthlyPayment(offer, interestRate, duration)
+const page = usePage()
+const user = computed(() => page.props.user)
 </script>
