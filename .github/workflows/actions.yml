@@ -13,8 +13,8 @@ on:
         options: [None, Fresh, Normal, User, Listing]
 
 jobs:
-  Deploy:
-    runs-on: ovhcloud-v1
+  Deployment:
+    runs-on: ovhcloud-master
     steps:
       - name: Pull Latest Code
         run: |
@@ -38,9 +38,9 @@ jobs:
           sudo chown -R ubuntu:www-data "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
           sudo chmod -R 775 "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
 
-  Optimize:
-    runs-on: ovhcloud-v1
-    needs: Deploy
+  Optimization:
+    runs-on: ovhcloud-master
+    needs: Deployment
     steps:
       - name: Cache Configurations
         run: |
@@ -63,8 +63,8 @@ jobs:
           php artisan view:cache
 
   Migration:
-    needs: Optimize
-    runs-on: ovhcloud-v1
+    needs: Optimization
+    runs-on: ovhcloud-master
     steps:
       - name: Migrate Database
         run: |
@@ -73,7 +73,7 @@ jobs:
 
   Seeder:
     needs: Migration
-    runs-on: ovhcloud-v1
+    runs-on: ovhcloud-master
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.seeder_type != 'None'
     steps:
       - name: Run Seeder
