@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate([
-            'email' => 'admin-laravue@yopmail.com',
+            'email' => 'admin@laravue.munirul.com',
         ], [
             'name' => 'Admin LaraVue',
             'email_verified_at' => now(),

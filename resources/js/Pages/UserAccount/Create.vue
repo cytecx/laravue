@@ -22,7 +22,7 @@
                 <div class="input-error" v-if="form.errors.password_confirmation">{{ form.errors.password_confirmation }}</div>
             </div>
             <div class="mt-4">
-                <button type="submit" class="btn-primary w-full">Register</button>
+                <button type="submit" class="btn-primary w-full cursor-pointer">Register</button>
                 <div class="mt-2 text-center">
                     <Link :href="route('login')" class="text-sm text-gray-500">Already have an account? Login</Link>
                 </div>
