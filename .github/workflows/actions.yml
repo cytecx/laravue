@@ -52,16 +52,28 @@ jobs:
           cd "${{ vars.APP_PATH }}"
           php artisan optimize:clear
 
+  Cache Config:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+    steps:
       - name: Cache Configurations
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan config:cache
 
+  Cache Routes:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+    steps:
       - name: Cache Routes
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan route:cache
 
+  Cache Views:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+    steps:
       - name: Cache Views
         run: |
           cd "${{ vars.APP_PATH }}"
