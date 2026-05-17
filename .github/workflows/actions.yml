@@ -52,7 +52,7 @@ jobs:
           cd "${{ vars.APP_PATH }}"
           php artisan optimize:clear
 
-  Cache Config:
+  Cache_Config:
     runs-on: ovhcloud-v1
     needs: Deploy
     steps:
@@ -61,7 +61,7 @@ jobs:
           cd "${{ vars.APP_PATH }}"
           php artisan config:cache
 
-  Cache Routes:
+  Cache_Routes:
     runs-on: ovhcloud-v1
     needs: Deploy
     steps:
@@ -70,7 +70,7 @@ jobs:
           cd "${{ vars.APP_PATH }}"
           php artisan route:cache
 
-  Cache Views:
+  Cache_Views:
     runs-on: ovhcloud-v1
     needs: Deploy
     steps:
@@ -80,7 +80,7 @@ jobs:
           php artisan view:cache
 
   Migration:
-    needs: Optimization
+    needs: [Optimization, Cache_Config, Cache_Routes, Cache_Views]
     runs-on: ovhcloud-v1
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true'
     steps:
