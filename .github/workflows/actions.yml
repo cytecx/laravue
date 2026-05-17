@@ -5,11 +5,6 @@ on:
     branches: [main, master]
   workflow_dispatch:
     inputs:
-      run_migration:
-        description: "Run Database Migrations"
-        required: false
-        default: false
-        type: boolean
       seeder_type:
         description: "Run Database Seeders"
         required: false
@@ -43,15 +38,6 @@ jobs:
           sudo chown -R ubuntu:www-data "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
           sudo chmod -R 775 "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
 
-  Optimization:
-    runs-on: ovhcloud-v1
-    needs: Deploy
-    steps:
-      - name: Optimize
-        run: |
-          cd "${{ vars.APP_PATH }}"
-          php artisan optimize:clear
-
   Cache_Config:
     runs-on: ovhcloud-v1
     needs: Deploy
@@ -60,6 +46,15 @@ jobs:
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan config:cache
+
+  Cache_Events:
+    runs-on: ovhcloud-v1
+    needs: Deploy
+    steps:
+      - name: Cache Events
+        run: |
+          cd "${{ vars.APP_PATH }}"
+          php artisan event:cache
 
   Cache_Routes:
     runs-on: ovhcloud-v1
@@ -80,9 +75,8 @@ jobs:
           php artisan view:cache
 
   Migration:
-    needs: [Optimization, Cache_Config, Cache_Routes, Cache_Views]
+    needs: [Cache_Config, Cache_Events, Cache_Routes, Cache_Views]
     runs-on: ovhcloud-v1
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true'
     steps:
       - name: Migrate Database
         run: |
