@@ -16,9 +16,8 @@ Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
 
 Route::resource('user-account', UserAccountController::class)->only(['create', 'store']);
 
-// Route::group(['prefix' => 'realtor', 'as' => 'realtor.'], function () {
-//     Route::resource('/', RealtorListingController::class);
-// });
+Route::resource('notification', NotificationController::class)->middleware('auth')->only(['index']);
+Route::put('notification/{notification}/seen', NotificationSeenController::class)->name('notification.seen')->middleware('auth');
 
 Route::prefix('realtor')->name('realtor.')->middleware('auth')->group(function () {
     Route::resource('listing', RealtorListingController::class)->withTrashed();
