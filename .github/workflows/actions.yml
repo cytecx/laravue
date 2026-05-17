@@ -38,44 +38,32 @@ jobs:
           sudo chown -R ubuntu:www-data "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
           sudo chmod -R 775 "${{ vars.APP_PATH }}/storage" "${{ vars.APP_PATH }}/bootstrap/cache"
 
-  Cache_Config:
+  Optimize:
     runs-on: ovhcloud-v1
     needs: Deploy
     steps:
       - name: Cache Configurations
         run: |
           cd "${{ vars.APP_PATH }}"
-          php artisan config:cache
+          php artisan optimize:clear
 
-  Cache_Events:
-    runs-on: ovhcloud-v1
-    needs: Deploy
-    steps:
       - name: Cache Events
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan event:cache
 
-  Cache_Routes:
-    runs-on: ovhcloud-v1
-    needs: Deploy
-    steps:
       - name: Cache Routes
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan route:cache
 
-  Cache_Views:
-    runs-on: ovhcloud-v1
-    needs: Deploy
-    steps:
       - name: Cache Views
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan view:cache
 
   Migration:
-    needs: [Cache_Config, Cache_Events, Cache_Routes, Cache_Views]
+    needs: Optimize
     runs-on: ovhcloud-v1
     steps:
       - name: Migrate Database
