@@ -14,20 +14,23 @@ on:
         default: None
         type: choice
         options: [None, Fresh, Normal, User, Listing]
+  workflow_run:
+    workflows: ["Build & Deploy"]
+    types: [completed]
 
 jobs:
   Migration:
     runs-on: ovhcloud-v1
+    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || (github.event_name == 'workflow_dispatch' && github.event.inputs.run_migration == 'true') }}
     steps:
       - name: Migrate Database
-        if: ${{ github.event.inputs.run_migration == 'true' }}
         run: |
           cd "${{ vars.APP_PATH }}"
           php artisan migrate --force
 
   Seeder:
     runs-on: ovhcloud-v1
-    if: ${{ github.event.inputs.seeder_type != 'None' }}
+    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || (github.event_name == 'workflow_dispatch' && github.event.inputs.seeder_type != 'None' && github.event.inputs.run_migration == 'true') }}
     steps:
       - name: Run Seeder
         run: |
