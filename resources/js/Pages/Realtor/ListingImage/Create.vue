@@ -28,7 +28,7 @@
     <section class="mt-4 grid grid-cols-3 gap-4">
       <div v-for="image in props.listing.images" :key="image.id" class="flex flex-col justify-space-between">
         <img :src="image.src" :alt="image.filename" class="rounded-md" />
-        <Link :href="route('realtor.listing.image.destroy', [props.listing.id, image.id])" method="delete" class="btn-outline text-xs font-medium mt-2 text-center">Delete</Link>
+        <Link :href="route('realtor.listing.image.destroy', [props.listing.id, image.id])" method="delete" class="btn-outline text-xs font-medium mt-2 text-center cursor-pointer">Delete</Link>
       </div>
     </section>
   </Box>
