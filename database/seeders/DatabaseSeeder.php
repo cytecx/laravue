@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate([
-            'email' => 'admin@laravue.munirul.com',
+            'email' => 'no-reply@munirul.com',
         ], [
             'name' => 'Admin LaraVue',
             'email_verified_at' => now(),
@@ -27,11 +27,8 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
         User::factory(10)->create();
-        Listing::factory(20)->create([
+        Listing::factory(200)->create([
             'by_user_id' => 1,
-        ]);
-        Listing::factory(20)->create([
-            'by_user_id' => 2,
         ]);
     }
 }

@@ -30,6 +30,7 @@ class ListingFactory extends Factory
             'street' => $faker->streetName(),
             'street_nr' => $faker->buildingNumber(),
             'price' => $faker->numberBetween(100_000, 1_000_000),
+            'by_user_id' => 1,
         ];
     }
 }
