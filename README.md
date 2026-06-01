@@ -1,58 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravue — Property Listing & Realtor Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, high-performance Single Page Application (SPA) built to learn and demonstrate full-stack web development using **Laravel**, **Vue 3 (Composition API)**, **Inertia.js**, and **Tailwind CSS**. 
 
-## About Laravel
+This project was built following a comprehensive multi-part course curriculum, taking a monolithic Laravel application and converting it into a fluid, reactive SPA.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Key Course Milestones & Implementation Details
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Below is the breakdown of the application features mapped directly to the 13 course chapters:
 
-## Learning Laravel
+### 1. Creating the Project & Setting Up Laravel, Vue & Inertia
+* **Setup**: Bootstrapped the Laravel backend with a Vue 3 frontend using Vite as the build tool.
+* **Inertia.js Integration**: Installed and configured `inertia-laravel` on the server and `@inertiajs/vue3` on the client. This allows rendering Vue views directly from Laravel controllers without needing to build a separate REST/GraphQL API or handle client-side routing state separately.
+* **Ziggy Routes**: Integrated Ziggy to enable using Laravel named routes directly inside Vue components.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. Your First SPA
+* **Client-Side Routing**: Set up Inertia links (`<Link>`) to enable seamless client-side page transitions without page reloads.
+* **Layouts**: Implemented shared application layouts (e.g., `MainLayout.vue`) to keep headers, footers, and persistent UI states consistent across views.
+* **SPA Lifecycle**: Verified correct page mounting, layout state inheritance, and state sharing.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Working with the Database
+* **Migrations**: Designed database schemas for listings (beds, baths, area, city, post code, street, street number, price, sold status) and related tables.
+* **Models & Factories**: Created Eloquent models with corresponding factories and seeders to populate local environments with realistic mock property data.
+* **Eloquent ORM**: Implemented raw CRUD functionality through controller actions and database queries.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 4. Adding Some Style (Tailwind CSS)
+* **Design System**: Set up Tailwind CSS (v4) with custom utility classes, inputs, and buttons.
+* **Responsive Layouts**: Designed pages to be responsive across mobile, tablet, and desktop viewports using Tailwind's flexbox, grid system, and media queries.
+* **Visual Polish**: Created card containers (`Box.vue`), dynamic labels, form inputs, and buttons with custom hover transitions and styles.
 
-## Agentic Development
+### 5. Monthly Payment Calculator (Mini Vue Project Within a Project)
+* **Interactive UI**: Embedded a fully reactive mortgage calculator on the listing show page (`Show.vue`).
+* **Composition API**: Built a reusable composable (`useMonthlyPayment.js`) that uses computed properties to calculate the monthly payment, total interest, and total amount paid.
+* **Sliders**: Integrated responsive sliders for interest rates and duration (years), updating calculation details instantly in the UI.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 6. Authentication & Security
+* **Authentication Flow**: Developed registration, login, and logout functionalities using standard Laravel session-based authentication.
+* **Route Protection**: Added middleware blocks (`auth`, `guest`) to secure routes and pages on both the frontend and backend.
+* **Inertia Shared Data**: Configured standard middleware (`HandleInertiaRequests`) to inject the authenticated user context dynamically into all Vue pages.
 
-```bash
-composer require laravel/boost --dev
+### 7. Database Relations & User Authorization
+* **Relational DB Design**: Linked Listings to Users (Realtors) via foreign keys, set up listing image relationships, and linked property offers to users (Buyers).
+* **Laravel Policies**: Created policies (`ListingPolicy`, `OfferPolicy`) to restrict access. Realtors can only edit, delete, or upload images to listings they own, and only they can accept/reject offers.
 
-php artisan boost:install
-```
+### 8. Data Pagination & Filtering
+* **Dynamic Search**: Created a robust filtering system (`Listing::scopeFilter`) allowing users to search by price range, bed/bath count, and area.
+* **Sorting**: Implemented sorting options (by price, date created, beds, etc.) that update query strings automatically.
+* **Pagination**: Created a reusable `Pagination.vue` component that handles backend pagination links cleanly within the SPA.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 9. The My Account Section (Realtor Dashboard)
+* **Realtor Hub**: Added a dedicated sub-section for Realtors (`/realtor/listing`) to monitor their properties.
+* **Soft Deletes**: Configured soft deleting so deleted listings can be reviewed and easily restored by their owners.
+* **Offer Status**: Displays count of offers received per listing, directly visible on the Realtor dashboard.
 
-## Contributing
+### 10. File Uploading
+* **Image Uploads**: Added multi-image upload forms to listing pages.
+* **Storage Configuration**: Configured file storage disks, uploading files securely, and generating symlinks (`storage:link`) for public viewing.
+* **Optimized Image Feed**: Implemented a responsive image grid inside property listings, with dynamic backend validation.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 11. Making Offers
+* **Offer Submission**: Enabled authenticated buyers to make custom monetary offers directly from the property details page.
+* **Offer Reviews**: Realtors can view all received offers for a listing, complete with information about the buyer and their bid.
+* **Accepting Offers**: Developed a transaction mechanism (`RealtorListingAcceptOfferController`) to accept an offer, automatically marking the listing as sold and rejecting other competing offers.
 
-## Code of Conduct
+### 12. Notifications (Informing Users About What Happened)
+* **Database Notifications**: Created custom database notification templates triggered when offers are placed or accepted.
+* **Notifications Center**: Built a navigation notification count and listing page, allowing users to view updates and mark them as read (`NotificationSeenController`).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 13. Sending Email & User Verification
+* **Email Verification**: Wired up Laravel's verification flow, requiring new users to confirm their email address before accessing Realtor dashboards.
+* **Signed Routes**: Utilized signed route URLs sent via mail to handle secure verification actions.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🛠 Tech Stack
 
-## License
+* **Backend**: Laravel 11/13, Eloquent ORM
+* **Frontend**: Vue 3 (Composition API, `<script setup>`), Inertia.js
+* **Styles**: Tailwind CSS (v4)
+* **Build Tool**: Vite
+* **Routing**: Laravel Routing + Ziggy (named routes in JS)
+* **Testing**: PHPUnit
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## ⚙️ Installation & Setup
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/laravue.git
+   cd laravue
+   ```
+
+2. **Run the Automated Setup Script**
+   The project includes a pre-configured composer script to handle installs, migrations, key generation, and frontend compilation:
+   ```bash
+   composer run setup
+   ```
+
+3. **Configure Environment Variables**
+   Rename `.env.example` to `.env` (handled by setup) and configure your database and mail credentials:
+   ```env
+   DB_CONNECTION=sqlite
+   # Or mysql / pgsql if you prefer
+   ```
+
+4. **Run Dev Servers**
+   Run the dev servers concurrently (serves the backend app, processes queues, opens Vite client HMR, and streams logs):
+   ```bash
+   npm run dev
+   # Or using composer shortcut:
+   composer run dev
+   ```
+
+5. **Run Tests**
+   Ensure all functions are green:
+   ```bash
+   composer run test
+   ```
