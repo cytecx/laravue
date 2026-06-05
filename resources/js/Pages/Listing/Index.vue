@@ -7,6 +7,9 @@
     <div v-if="listings.data.length" class="w-full flex just justify-center mt-4 mb-4">
         <Pagination :links="listings.links" />
     </div>
+    <div v-else class="w-full text-center mt-4 mb-4">
+        <p class="text-gray-500">No listings found.</p>
+    </div>
 </template>
 
 <script setup>
